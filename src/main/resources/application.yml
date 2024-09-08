@@ -1,0 +1,3 @@
+jwt:
+  key: ##use o comando abaixo pra gerar uma key aleatoria
+  expiration-time:
