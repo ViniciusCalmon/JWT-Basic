@@ -21,19 +21,22 @@ public class JWTFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws ServletException, IOException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String jwt = httpServletRequest.getHeader("Authorization");
+        try {
+            HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+            String jwt = httpServletRequest.getHeader("Authorization");
 
-        if (StringUtils.hasText(jwt)) {
-            if (tokenProvider.isValid(jwt, servletResponse)) {
-                final User user = tokenProvider.getUserFromToken(jwt);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getId(), null, user.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else {
-                return;
+            if (StringUtils.hasText(jwt)) {
+                if (tokenProvider.isValid(jwt, servletResponse)) {
+                    final User user = tokenProvider.getUserFromToken(jwt);
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getId(), null, user.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } else {
+                    return;
+                }
             }
+            filterChain.doFilter(servletRequest, servletResponse);
+        } catch (Exception e) {
+            throw new ServletException("Erro no filtro JWT", e);
         }
-        filterChain.doFilter(servletRequest, servletResponse);
     }
-
 }
