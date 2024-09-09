@@ -1,3 +1,13 @@
 jwt:
-  key: ##use o comando abaixo pra gerar uma key aleatoria
-  expiration-time:
+  key: t2mXHksiSbBASHi=ADxvHTjMeyfQliPYCwVxhh4F7vmtbxyrZJ_P&17pU17TvE5n71KT9#Ij7J-2D!RQw=Isg0xxhl9a!7nPhco\nMm1dQgchfoG=WGrXJUKliWK\8!\RlMRV=S9u0K#sfAnJJT5!221jx13ZlW4zP4Nle_VP_0N$Tdm_U877fQN6yZEFcVdtx#zrt#yXt##LpghWzHc8TmF36=71r&Vwl_JG_NRfOKiDl5n-1AILyPaF7GcluD2SCB!5S4X!&34cI8XphjW\rP=Adt2px0c!4oV-g#V0=1Ie86JsEe-z_TqopFTcT\!RcXuPsUqAO0_-OU8XF0SBWCd
+  expiration-time: 1800000
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/jwt_basic
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
