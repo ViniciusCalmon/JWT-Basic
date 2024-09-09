@@ -1,9 +1,7 @@
 package com.study.jwtbacic.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class Roles implements GrantedAuthority {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(length = 36)
     private String id;
 
