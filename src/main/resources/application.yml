@@ -3,6 +3,9 @@ jwt:
   expiration-time: 1800000
 
 spring:
+  logging:
+    level:
+      org.springframework.security: DEBUG
   datasource:
     url: jdbc:postgresql://localhost:5432/jwt_basic
     username: admin
