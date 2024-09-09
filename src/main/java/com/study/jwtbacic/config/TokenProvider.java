@@ -90,8 +90,8 @@ public class TokenProvider {
     }
 
     private String extractToken(String authToken) {
-        if (authToken.toLowerCase().startsWith("bearer")) {
-            return authToken.substring("bearer ".length());
+        if (authToken.startsWith("Bearer")) {
+            return authToken.substring("Bearer ".length());
         }
         return authToken;
     }
