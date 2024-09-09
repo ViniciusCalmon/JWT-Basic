@@ -19,6 +19,7 @@ import java.util.Collection;
 public class User implements UserDetails {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(length = 36)
     private String id;
 
@@ -30,8 +31,8 @@ public class User implements UserDetails {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_users_roles",
-            joinColumns = @JoinColumn(name = "user_identifier"),
-            inverseJoinColumns = @JoinColumn(name = "role_identifier"))
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Roles> roles;
 
     @Override
