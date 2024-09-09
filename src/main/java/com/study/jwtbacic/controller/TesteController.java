@@ -11,17 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/test")
 public class TesteController {
 
-    @GetMapping("/liberado")
-    public ResponseEntity<String> endpointLiberado(){
-        return new ResponseEntity<>("Liberado", HttpStatus.OK);
-    }
-
-    @GetMapping("/requer_autenticacao")
+    @GetMapping("/user")
     public ResponseEntity<String> requerAutenticacao(){
-        return new ResponseEntity<>("Autenticado", HttpStatus.OK);
+        return new ResponseEntity<>("Autenticado user", HttpStatus.OK);
     }
 
-    @GetMapping("/requer_autenticacao_admin")
+    @GetMapping("/admin")
     public ResponseEntity<String> requerAutenticacaoAdmin(){
         return new ResponseEntity<>("Autenticado admin", HttpStatus.OK);
     }

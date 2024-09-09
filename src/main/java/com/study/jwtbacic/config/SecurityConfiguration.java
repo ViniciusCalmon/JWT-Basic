@@ -3,7 +3,7 @@ package com.study.jwtbacic.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -13,8 +13,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandlerImpl;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
@@ -27,11 +25,12 @@ public class SecurityConfiguration {
 
     private static final String[] ENDPOINTS_LIBERADOS = {
             "/v1/auth/signup",
-            "/v1/auth/login",
-            "/v1/test/liberado"
+            "/v1/auth/login"
     };
 
-    private static final String ENDPOINTS_RESTRITOS_ADMIN = "/v1/test/requer_autenticacao_admin";
+    private static final String ENDPOINTS_RESTRITOS_ADMIN = "/v1/test/admin";
+
+    private static final String ENDPOINTS_RESTRITOS_USER = "/v1/test/user";
 
 
     @Bean
@@ -48,15 +47,13 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(ENDPOINTS_LIBERADOS).permitAll()
-                        .requestMatchers(ENDPOINTS_RESTRITOS_ADMIN).hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, ENDPOINTS_RESTRITOS_USER).hasAuthority("USER")
+                        .requestMatchers(HttpMethod.GET, ENDPOINTS_RESTRITOS_ADMIN).hasAuthority("ADMIN")
                         .anyRequest().authenticated())
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new JWTFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
-                .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .exceptionHandling(exceptionHandling -> exceptionHandling.accessDeniedHandler(new AccessDeniedHandlerImpl()));
+                .addFilterBefore(new JWTFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
