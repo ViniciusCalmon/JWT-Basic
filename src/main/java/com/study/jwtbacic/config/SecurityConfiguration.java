@@ -51,7 +51,7 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(ENDPOINTS_LIBERADOS).permitAll()
-                        .requestMatchers(ENDPOINTS_RESTRITOS_ADMIN).hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(ENDPOINTS_RESTRITOS_ADMIN).hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
