@@ -25,7 +25,8 @@ public class SecurityConfiguration {
 
     private static final String[] ENDPOINTS_LIBERADOS = {
             "/v1/auth/signup",
-            "/v1/auth/login"
+            "/v1/auth/login",
+            "v1/test/roles"
     };
 
     private static final String ENDPOINTS_RESTRITOS_ADMIN = "/v1/test/admin";
@@ -50,8 +51,8 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(ENDPOINTS_LIBERADOS).permitAll()
-                        .requestMatchers(HttpMethod.GET, ENDPOINTS_RESTRITOS_USER).hasAuthority("USER")
-                        .requestMatchers(HttpMethod.GET, ENDPOINTS_RESTRITOS_ADMIN).hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, ENDPOINTS_RESTRITOS_USER).hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.GET, ENDPOINTS_RESTRITOS_ADMIN).hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(new JWTFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
 
